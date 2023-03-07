@@ -1,5 +1,2 @@
-# User-specific (IntelliJ) stuff
-.idea/
-*.iml
-out/
+# User-specific stuff
 .DS_Store
