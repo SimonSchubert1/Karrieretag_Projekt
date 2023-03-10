@@ -15,9 +15,8 @@
     }
 
     function custom_dashboard_help() {
-        //toString();
-        $array  = array('title' => 'contact', 'checked' => 'true')
-        for ()
+        toString();
+        //$array  = array('title' => 'contact', 'checked' => 'true');
         //$_GET["contact"];
     }
 
@@ -58,7 +57,7 @@
         return $form_name;
     }
 
-    public function form($instance) {
+    /*public function form($instance) {
     $title = isset($instance['title']) ? $instance['title'] : '';
     $checked = isset($instance['checked']) ? $instance['checked'] : false;
     $submitted = isset($_POST[$this->get_field_name('submitted')]) ? true : false;
@@ -82,5 +81,5 @@
     if ($submitted) {
         echo '<p>Submitted data: ' . $data . '</p>';
     }
-}
+}*/
 ?>
