@@ -22,7 +22,7 @@ In this example, the my_custom_content_filter() function will be executed whenev
 
 Note that $content can also be used in other filter and action hooks in WordPress, depending on the context. For example, it might represent the content of a comment or the body of an email message.
 
-##2. Theorie classes
+## 2. Theorie classes
 
 class 'name' {}'
 
@@ -48,7 +48,7 @@ The pseudo-variable $this is available when a method is called from within an ob
 In this class you can define funktion and call them in the class with $this. 
 
 
-##3. Theorie array($this, 'method') vs $this -> 'method'
+## 3. Theorie array($this, 'method') vs $this -> 'method'
 
 In object-oriented programming in PHP, '$this->method()' and ' array($this, method)' both allow you to call a method on the current object. However, there are some differences in how they work.
 
@@ -83,7 +83,7 @@ In this example, 'callMyMethod()' creates an array containing '$this' and the st
 
 In summery , 'this->method()' ist the more common way to call a method on the current object, while 'array($this, method)' is userful when you need to pass the method as a callback to other functions.
 
-##3. Theorie add_action
+## 3. Theorie add_action
 
 In PHP, the 'add_action' function is used in WordPress to add a new action to the WordPress action system
 
@@ -104,7 +104,7 @@ In this example , the 'my_custom_function' function is definded, and then regist
 Whenever the 'wp_head' action occurs in the WordPress code, the 'my_custom_fnction' function will be executed, allowin you to perform your own custom code at that point in the WordPress codebase.    
 
 
-##4. Theorie register_setting(), settings_field(), settings_section()
+## 4. Theorie register_setting(), settings_field(), settings_section()
 
 register_setting(),
 
