@@ -18,17 +18,19 @@
         toString();
         //$array  = array('title' => 'contact', 'checked' => 'true');
 
-        foreach($_POST as $key => $value) {
+        foreach ($_POST as $key => $value) {
             // Preprocess $key which holds name of input field
             // You can apply your logic to process value for an input $key here
             // From your example it looks like name is a number so special case can check within a condition for $key as number
 
             echo $key . " = " . $value;
         }
+
+        echo $_POST["contact"];
     }
 
     function toString(){
-        echo "<form method='get'>";
+        echo "<form name='myForm' method='post' acton=''>";
         for($i = 0; $i < count(find_forms_on_website()); $i++){
             $form_name = get_form_name(find_forms_on_website()[$i]);
             echo "<input type='checkbox' . $form_name . > " . $form_name . " <input type='button' value='putout'>" ."<br>";
