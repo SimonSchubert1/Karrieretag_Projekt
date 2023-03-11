@@ -17,7 +17,14 @@
     function custom_dashboard_help() {
         toString();
         //$array  = array('title' => 'contact', 'checked' => 'true');
-        //$_GET["contact"];
+
+        foreach($_POST as $key => $value) {
+            // Preprocess $key which holds name of input field
+            // You can apply your logic to process value for an input $key here
+            // From your example it looks like name is a number so special case can check within a condition for $key as number
+
+            echo $key . " = " . $value;
+        }
     }
 
     function toString(){
@@ -50,7 +57,8 @@
         return $forms;
     }
 
-    function get_form_name($form) {
+    function get_form_name($form)
+    {
         $doc = new DOMDocument();
         @$doc->loadHTML($form);
         $form_name = $doc->getElementsByTagName('form')->item(0)->getAttribute('name');
