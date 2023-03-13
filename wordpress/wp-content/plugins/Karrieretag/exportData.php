@@ -12,30 +12,27 @@ if($db->connect_error){
     die("Connection failed: " . $db->connect_error);
 }
 
-/*$result = $db->query("SELECT * FROM test ORDER BY id ASC");
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo $row['id'];
-        echo $row['name'];
-    }
-} else {
-    echo "No test found...";
-}*/
-
+$colnames = $db->query("SHOW COLUMNS FROM `" . $dbTable . "`");
 $query = $db->query("SELECT * FROM `" . $dbTable . "` ORDER BY id ASC");
-if($query->num_rows > 0){
+if($query->num_rows > 0) {
     $delimiter = ";";
-    $filename = $dbTable. "_" . date('Y-m-d') . ".csv";
+    $filename = $dbTable . "_" . date('Y-m-d') . ".csv";
 
 //Create a file pointer
     $f = fopen('php://memory', 'w');
 
 //Set column headers
-    $fields = array('ID', 'NAME');
+    $fields = array();
+    while ($row = $colnames->fetch_row()){
+        $fields[] = $row[0];
+    }
     fputcsv($f, $fields, $delimiter);
 
-    while($row = $query->fetch_assoc()){
-        $lineData = array($row['id'], $row['name']);
+    while ($row = $query->fetch_row()) {
+        $lineData = array();
+        for($i = 0; $i < count($row); $i++){
+            $lineData[] = $row[$i];
+        }
         fputcsv($f, $lineData, $delimiter);
     }
 
