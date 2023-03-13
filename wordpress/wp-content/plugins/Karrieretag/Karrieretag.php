@@ -64,16 +64,6 @@ class KarrieretagPlugin{
         echo "<a href='../wp-content/plugins/Karrieretag/exportData.php'>Export</a>";
     }
 
-    function button_clicks(){
-        foreach ($this->form_names as $form_name) {
-            $button_name = $form_name . "button";
-            if(isset($_POST[$button_name])){
-                echo $button_name . "was clicked";
-            }
-            echo $button_name;
-        }
-    }
-
     function find_forms_on_website() {
         $args = array(
             'post_type' => 'any',
