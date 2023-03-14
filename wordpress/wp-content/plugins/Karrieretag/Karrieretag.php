@@ -82,7 +82,8 @@ class KarrieretagPlugin{
                 foreach($this->find_forms_on_website_full_code() as $key3 => $value2) {
                     $comp = $this->get_form_name($value2);
                     if($key == $comp) {
-                        foreach ($this->get_input_tag_names($value2) as $key2 => $value) {
+                        $this->change_action($key);
+                        foreach ($this->get_input_tag_names_and_type($value2) as $key2 => $value) {
                             $splitstring = explode(";", $value);
                             $query .= "`" . $splitstring[0] . "`" . " " . $this->suggest_mysql_datatype($splitstring[1]) . ", ";
                         }
@@ -97,36 +98,7 @@ class KarrieretagPlugin{
                     echo "Error creating table: " . mysqli_error($db);
                 }
             }
-
-            foreach ($formnames as $key){
-                $column = array();
-                foreach ($this->find_forms_on_website_full_code() as $key2 => $value){
-                    $comp = $this->get_form_name($value);
-                    if($key == $comp){
-                        foreach ($this->get_input_tag_names($value) as $key3 => $value2){
-                            $column[$value2] = $_POST[$value2];
-                        }
-                    }
-                }
-                $query = "INSERT INTO `" . $key . "` (";
-                foreach ($column as $key4){
-                    $query .= $key4 . ", ";
-                }
-                $query .= ") VALUES (";
-                foreach ($column as $key5 => $value){
-                    $query .= $value . ", ";
-                }
-                $query .= ")";
-
-                if (mysqli_query($db, $query)) {
-                    echo "<br> <b>Table created successfully</b>";
-                } else {
-                    echo "Error creating table: " . mysqli_error($db);
-                }
-            }
         }
-
-        mysqli_close($db);
     }
 
     function suggest_mysql_datatype($input) {
@@ -139,6 +111,10 @@ class KarrieretagPlugin{
         } else {
             return "VARCHAR(255)";
         }
+    }
+
+    function change_action($form_html){
+        echo "<script> document.getElementById(" . $form_html . ").action = \"#\"; </script>";
     }
 
     function get_form_name_from_code($html) {
@@ -191,6 +167,28 @@ class KarrieretagPlugin{
     }
 
     function get_input_tag_names($form_html) {
+        $input_tag_names = array();
+
+        // Load the HTML form using the DOMDocument class
+        $dom = new DOMDocument();
+        @$dom->loadHTML($form_html);
+
+        // Get all input elements in the form
+        $input_tags = $dom->getElementsByTagName('input');
+
+        // Loop through each input element and extract the name attribute
+        foreach ($input_tags as $input) {
+            $name = $input->getAttribute('name');
+            $type = $input->getAttribute('type');
+            if (!empty($name)) {
+                $input_tag_names[] = $name;
+            }
+        }
+
+        return $input_tag_names;
+    }
+
+    function get_input_tag_names_and_type($form_html) {
         $input_tag_names = array();
 
         // Load the HTML form using the DOMDocument class
