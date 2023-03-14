@@ -4,7 +4,7 @@
     * Description: Handle the basics with this plugin.
     * Version: 1.10.3
     * Requires at least: 5.2
-    * Requires PHP: 7.2
+    * Requires PHP: 7.0
     */
 
 if( ! defined( 'ABSPATH') ){
@@ -61,11 +61,6 @@ class KarrieretagPlugin{
         }
         echo "<input type='submit' name='submitbtn'></form>";
 
-        /*foreach ($this->find_forms_on_website_full_code() as $key => $value){
-            $tag_str = "<".$value.">";
-            echo htmlspecialchars($tag_str);
-        }*/
-
         if(isset($_POST['submitbtn'])) {
             $formnames = array();
             foreach ($_POST as $key => $value) {
@@ -87,7 +82,6 @@ class KarrieretagPlugin{
                 foreach($this->find_forms_on_website_full_code() as $key3 => $value2) {
                     $comp = $this->get_form_name($value2);
                     if($key == $comp) {
-                        //echo count($this->get_input_tag_names($value2)) . "tagnames";
                         foreach ($this->get_input_tag_names($value2) as $key2 => $value) {
                             $splitstring = explode(";", $value);
                             $query .= "`" . $splitstring[0] . "`" . " " . $this->suggest_mysql_datatype($splitstring[1]) . ", ";
@@ -103,7 +97,36 @@ class KarrieretagPlugin{
                     echo "Error creating table: " . mysqli_error($db);
                 }
             }
+
+            foreach ($formnames as $key){
+                $column = array();
+                foreach ($this->find_forms_on_website_full_code() as $key2 => $value){
+                    $comp = $this->get_form_name($value);
+                    if($key == $comp){
+                        foreach ($this->get_input_tag_names($value) as $key3 => $value2){
+                            $column[$value2] = $_POST[$value2];
+                        }
+                    }
+                }
+                $query = "INSERT INTO `" . $key . "` (";
+                foreach ($column as $key4){
+                    $query .= $key4 . ", ";
+                }
+                $query .= ") VALUES (";
+                foreach ($column as $key5 => $value){
+                    $query .= $value . ", ";
+                }
+                $query .= ")";
+
+                if (mysqli_query($db, $query)) {
+                    echo "<br> <b>Table created successfully</b>";
+                } else {
+                    echo "Error creating table: " . mysqli_error($db);
+                }
+            }
         }
+
+        mysqli_close($db);
     }
 
     function suggest_mysql_datatype($input) {
