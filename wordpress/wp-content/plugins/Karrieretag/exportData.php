@@ -20,42 +20,42 @@ if($db->connect_error){
 $colnames = $db->query("SHOW COLUMNS FROM `" . $dbTable . "`");
 
 //get the data from the table
-$query = $db->query("SELECT * FROM `" . $dbTable . "` ORDER BY id ASC");
-if($query->num_rows > 0) {
-    //Character that devides the fields in the .csv file
-    $delimiter = ";";
+$query = $db->query("SELECT * FROM `" . $dbTable . "`");
+if (($colnames->num_rows) > 0 && ($query->num_rows) > 0) {
+        //Character that devides the fields in the .csv file
+        $delimiter = ";";
 
-    //file the data gets saved to
-    $filename = $dbTable . "_" . date('Y-m-d') . ".csv";
+        //file the data gets saved to
+        $filename = $dbTable . "_" . date('Y-m-d') . ".csv";
 
-    //Create a file pointer
-    $f = fopen('php://memory', 'w');
+        //Create a file pointer
+        $f = fopen('php://memory', 'w');
 
-    //Set column headers
-    $fields = array();
-    while ($row = $colnames->fetch_row()){
-        $fields[] = $row[0];
-    }
-    fputcsv($f, $fields, $delimiter);
-
-    //set column fields
-    while ($row = $query->fetch_row()) {
-        $lineData = array();
-        for($i = 0; $i < count($row); $i++){
-            $lineData[] = $row[$i];
+        //Set column headers
+        $fields = array();
+        while ($row = $colnames->fetch_row()) {
+            $fields[] = $row[0];
         }
-        fputcsv($f, $lineData, $delimiter);
-    }
+        fputcsv($f, $fields, $delimiter);
 
-    fseek($f,0);
+        //set column fields
+        while ($row = $query->fetch_row()) {
+            $lineData = array();
+            for ($i = 0; $i < count($row); $i++) {
+                $lineData[] = $row[$i];
+            }
+            fputcsv($f, $lineData, $delimiter);
+        }
 
-    //define header
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="' . $filename . '";');
+        fseek($f, 0);
+
+        //define header
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '";');
 
 //output all remaining data on a file pointer
 
-    fpassthru($f);
+        fpassthru($f);
 }
 exit;
 ?>

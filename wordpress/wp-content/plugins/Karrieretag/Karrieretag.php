@@ -61,8 +61,6 @@ class KarrieretagPlugin{
         }
         echo "<input type='submit' name='submitbtn'></form>";
 
-        echo "<a href='../wp-content/plugins/Karrieretag/exportData.php'>Export</a>";
-
         /*foreach ($this->find_forms_on_website_full_code() as $key => $value){
             $tag_str = "<".$value.">";
             echo htmlspecialchars($tag_str);
@@ -88,7 +86,8 @@ class KarrieretagPlugin{
                 $query = "CREATE TABLE IF NOT EXISTS `" . $key . "` (";
                 foreach($this->find_forms_on_website_full_code() as $key3 => $value2) {
                     $comp = $this->get_form_name($value2);
-                    if(!strcmp($key, $comp)) {
+                    if($key == $comp) {
+                        //echo count($this->get_input_tag_names($value2)) . "tagnames";
                         foreach ($this->get_input_tag_names($value2) as $key2 => $value) {
                             $splitstring = explode(";", $value);
                             $query .= "`" . $splitstring[0] . "`" . " " . $this->suggest_mysql_datatype($splitstring[1]) . ", ";
