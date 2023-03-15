@@ -1,6 +1,6 @@
 <?php
 /*
-    * Plugin Name: AppleSucks
+    * Plugin Name: Karrieretag
     * Description: Handle the basics with this plugin.
     * Version: 1.10.3
     * Requires at least: 5.2
@@ -34,12 +34,8 @@ class KarrieretagPlugin{
         flush_rewrite_rules();
     }
 
-    function uninstall(){
-        //function called on uninstallation of the plugin
-    }
-
     function custom_menu_page(){
-        add_menu_page('AppleSucks',  'AppleSucks', 'manage_options', 'AppleSucks', array($this, 'test_init'));
+        add_menu_page('Karrieretag',  'Karrieretag', 'manage_options', 'Karrieretag', array($this, 'test_init'));
     }
 
     function test_init(){
