@@ -20,6 +20,7 @@ class KarrieretagPlugin{
     public function __construct()
     {
         add_action( 'admin_menu', array($this, 'custom_menu_page'));
+        add_action( 'init', array($this, 'insert_data'));
     }
 
     function activate(){
@@ -84,8 +85,10 @@ class KarrieretagPlugin{
                     if($key == $comp) {
                         $this->change_action($key);
                         foreach ($this->get_input_tag_names_and_type($value2) as $key2 => $value) {
-                            $splitstring = explode(";", $value);
-                            $query .= "`" . $splitstring[0] . "`" . " " . $this->suggest_mysql_datatype($splitstring[1]) . ", ";
+                                $splitstring = explode(";", $value);
+                            if($splitstring[1] != "hidden") {
+                                $query .= "`" . $splitstring[0] . "`" . " " . $this->suggest_mysql_datatype($splitstring[1]) . ", ";
+                            }
                         }
                     }
                 }
@@ -98,6 +101,57 @@ class KarrieretagPlugin{
                     echo "Error creating table: " . mysqli_error($db);
                 }
             }
+        }
+    }
+
+    function insert_data(){
+        $dbHost = "localhost";
+        $dbUsername = "wordpress";
+        $dbPassword = "Pa$\$word1234";
+        $dbName = "test";
+
+        $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['form-name'])) {
+                $key = $_POST['form-name'];
+                echo $key;
+                $column = array();
+                foreach ($this->find_forms_on_website_full_code() as $key2 => $value) {
+                    $comp = $this->get_form_name($value);
+                    if ($key == $comp) {
+                        foreach ($this->get_input_tag_names_and_type($value) as $key3 => $value2) {
+                            $splitstring = explode(";", $value2);
+                            if (isset($_POST[$splitstring[0]]) && $splitstring[1] != "hidden") {
+                                $column[$splitstring[0]] = $_POST[$splitstring[0]];
+                            }
+                        }
+                    }
+                }
+                $query = "INSERT INTO `" . $key . "` (";
+                foreach ($column as $key4 => $value) {
+                    $splitstring = explode(";", $key4);
+                    $query .= "`" . $splitstring[0] . "`, ";
+                }
+                $query = rtrim($query, ", "); // remove trailing comma
+                $query .= ") VALUES (";
+                foreach ($column as $key5 => $value) {
+                    $query .= "'" . $value . "', ";
+                }
+                $query = rtrim($query, ", "); // remove trailing comma
+                $query .= ")";
+
+                echo $query;
+
+                if (mysqli_query($db, $query)) {
+                    echo "<br> <b>Values inserted successfully</b>";
+                } else {
+                    echo "Error creating table: " . mysqli_error($db);
+                }
+
+            wp_redirect($_SERVER['REQUEST_URI']);
+            exit;
+        }else{
+            echo "<b> no propper field</b>";
         }
     }
 
