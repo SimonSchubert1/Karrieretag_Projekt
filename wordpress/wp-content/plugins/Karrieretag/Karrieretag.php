@@ -107,7 +107,6 @@ class KarrieretagPlugin
                 foreach ($this->find_forms_on_website_full_code() as $key3 => $value2) {
                     $comp = $this->get_form_name($value2);
                     if ($key == $comp) {
-                        $this->change_action($key);
                         foreach ($this->get_input_tag_names_and_type($value2) as $key2 => $value) {
                             $splitstring = explode(";", $value);
                             if ($splitstring[1] != "hidden") {
@@ -230,6 +229,27 @@ class KarrieretagPlugin
         }
 
         // Return an array of all form elements found on the website
+        return $forms;
+    }
+
+    function find_forms_on_website_full_code() {
+        $args = array(
+            'post_type' => 'any',
+            'post_status' => 'publish',
+            'posts_per_page' => -1
+        );
+
+        $posts = get_posts($args);
+
+        $forms = array();
+
+        foreach ($posts as $post) {
+            preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
+            foreach ($matches[0] as $match) {
+                $forms[] = $match;
+            }
+        }
+
         return $forms;
     }
 
