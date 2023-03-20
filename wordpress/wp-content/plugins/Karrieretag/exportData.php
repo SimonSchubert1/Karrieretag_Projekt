@@ -2,9 +2,9 @@
 
 //data of database
 $dbHost = "localhost";
-$dbUsername = "wordpress";
-$dbPassword = "Pa$\$word1234";
-$dbName = "test";
+$dbUsername = "wordpress"; //nach belieben umändern
+$dbPassword = "Pa$\$word1234"; //nach belieben umändern
+$dbName = "test"; //nach belieben umändern
 
 //table name
 $dbTable = $_GET['dbTable'];
