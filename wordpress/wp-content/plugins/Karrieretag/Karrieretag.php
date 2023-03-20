@@ -129,22 +129,20 @@ class KarrieretagPlugin
     }
 
     // Define function to insert data into MySQL database
-    function insert_data()
-    {
-        // Define MySQL database credentials
-        $dbHost = "localhost";
-        $dbUsername = "wordpress";
-        $dbPassword = "Pa$\$word1234";
-        $dbName = "test";
-
-        // Create MySQL connection object
-        $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-
+    function insert_data() {
         // Check if form was submitted using POST method and has a valid form name
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['form-name'])) {
+            // Define MySQL database credentials
+            $dbHost = "localhost";
+            $dbUsername = "wordpress";
+            $dbPassword = "Pa$\$word1234";
+            $dbName = "test";
+
+            // Create MySQL connection object
+            $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+
             // Get the form name from the submitted form data
             $key = $_POST['form-name'];
-            echo $key;
 
             // Initialize array to store form input data
             $column = array();
@@ -182,7 +180,7 @@ class KarrieretagPlugin
 
             // Execute the INSERT query and display success or error message
             if (mysqli_query($db, $query)) {
-                echo "<br> <b>Values inserted successfully</b>";
+
             } else {
                 echo "Error creating table: " . mysqli_error($db);
             }
@@ -190,9 +188,6 @@ class KarrieretagPlugin
             // Redirect user to the same page after form submission
             wp_redirect($_SERVER['REQUEST_URI']);
             exit;
-        } else {
-            // Display error message if no valid form name was submitted
-            echo "<b> no propper field</b>";
         }
     }
 
