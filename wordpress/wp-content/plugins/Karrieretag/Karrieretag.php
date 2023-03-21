@@ -4,8 +4,11 @@
  * Description: Handle the basics with this plugin.
  * Version: 1.10.3
  * Requires at least: 5.2
- * Requires PHP: 7.0
+ * Requires PHP: 5.0
  */
+
+echo '<link rel="stylesheet" type="text/css" href="../wp-content/plugins/Karrieretag/css/stylesheet.css">';
+echo '<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">';
 
 // if ABSPATH is not defined, exit
 if (!defined('ABSPATH')) {
@@ -56,14 +59,18 @@ class KarrieretagPlugin
         $this->make_menu_page();
     }
 
+
     // function that creates the custom menu page
+
+
     function make_menu_page()
     {
         // display "AppleSucks" as a title
-        echo "<h1>AppleSucks</h1>";
+        echo "<span class='span'><h1 class='h1'>Karrieretag</h1></span>";
+        echo "<container class='container'>";
 
         // create a form with the ID "Forms-to-check" and a post method
-        echo "<form action='#' method='post' id='Forms-to-check'>";
+        echo "<form class='form' action='#' method='post' id='Forms-to-check'>";
 
         // loop through each form on the website
         for ($i = 0; $i < count($this->find_forms_on_website()); $i++) {
@@ -72,9 +79,10 @@ class KarrieretagPlugin
 
             // create a checkbox for the form name
             if (isset($_POST["_" . $form_name . "_"])) {
-                echo "<input type='checkbox' name='$form_name' checked> " . $form_name . "<a href='../wp-content/plugins/Karrieretag/exportData.php?dbTable=" . $form_name . "'>Export</a>" . "<br>";
+
+                echo "<label class='check-label'><input class='checkbox' type='checkbox' name='$form_name'><div class='check-design'></div> " . "<div class='text'>" . $form_name . "</div>" . "<div class='wrapper'><div class='file-export'><a href='../wp-content/plugins/Karrieretag/exportData.php?dbTable=" . $form_name . "'>Export</a><i class='uil uil-arrow-up'></i></div></div></label>" . "<br>";
             } else {
-                echo "<input type='checkbox' name='$form_name'> " . $form_name . "<a href='../wp-content/plugins/Karrieretag/exportData.php?dbTable=" . $form_name . "'>Export</a>" . "<br>";
+                echo "<label class='check-label'><input class='checkbox' type='checkbox' name='$form_name'><div class='check-design'></div>" . "<div class='text'>" . $form_name . "</div>" . "<div class='wrapper'><div class='file-export'><a href='../wp-content/plugins/Karrieretag/exportData.php?dbTable=" . $form_name . "'>Export</a><i class='uil uil-arrow-up'></i></div></div></label>" . "<br>";
             }
 
             // add the form name to an array
@@ -82,7 +90,7 @@ class KarrieretagPlugin
         }
 
         // add a submit button to the form
-        echo "<input type='submit' name='submitbtn'></form>";
+        echo "<input id='sum_button_kar' type='submit' name='submitbtn'></form></container>";
 
         // if the submit button has been pressed
         if (isset($_POST['submitbtn'])) {
@@ -128,7 +136,9 @@ class KarrieretagPlugin
     }
 
     // Define function to insert data into MySQL database
-    function insert_data() {
+    function insert_data()
+    {
+
         // Check if form was submitted using POST method and has a valid form name
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['form-name'])) {
             // Define MySQL database credentials
@@ -204,92 +214,99 @@ class KarrieretagPlugin
         }
     }
 
+
     // Define a function to find all forms on the website
-    function find_forms_on_website()
-    {
-        // Set up arguments for get_posts() function to retrieve all published posts
-        $args = array(
-            'post_type' => 'any',
-            'post_status' => 'publish',
-            'posts_per_page' => -1
-        );
 
-        // Get all published posts
-        $posts = get_posts($args);
+        function find_forms_on_website()
+        {
 
-        // Initialize an empty array to store all forms found on the website
-        $forms = array();
+            $args = array(
+                'post_type' => 'any',
+                'post_status' => 'publish',
+                'posts_per_page' => -1
+            );
 
-        // Loop through each post and use regular expressions to find all form elements in its content
-        foreach ($posts as $post) {
-            preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
-            foreach ($matches[0] as $match) {
-                $forms[] = $match;
+            // Get all published posts
+            $posts = get_posts($args);
+
+            // Initialize an empty array to store all forms found on the website
+            $forms = array();
+
+            // Loop through each post and use regular expressions to find all form elements in its content
+            foreach ($posts as $post) {
+                preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
+                foreach ($matches[0] as $match) {
+                    $forms[] = $match;
+                }
             }
+
+
+            // Return an array of all form elements found on the website
+
+
+            return $forms;
         }
 
-        // Return an array of all form elements found on the website
-        return $forms;
-    }
+        function find_forms_on_website_full_code()
+        {
+            $args = array(
+                'post_type' => 'any',
+                'post_status' => 'publish',
+                'posts_per_page' => -1
+            );
 
-    function find_forms_on_website_full_code() {
-        $args = array(
-            'post_type' => 'any',
-            'post_status' => 'publish',
-            'posts_per_page' => -1
-        );
+            $posts = get_posts($args);
 
-        $posts = get_posts($args);
+            $forms = array();
 
-        $forms = array();
-
-        foreach ($posts as $post) {
-            preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
-            foreach ($matches[0] as $match) {
-                $forms[] = $match;
+            foreach ($posts as $post) {
+                preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
+                foreach ($matches[0] as $match) {
+                    $forms[] = $match;
+                }
             }
+
+            return $forms;
         }
 
-        return $forms;
-    }
+        // Define a function to extract the name and type attributes of all input tags in a form
+        function get_input_tag_names_and_type($form_html)
+        {
+            // Initialize an empty array to store the name and type attributes of all input tags in the form
+            $input_tag_names = array();
 
-    // Define a function to extract the name and type attributes of all input tags in a form
-    function get_input_tag_names_and_type($form_html)
-    {
-        // Initialize an empty array to store the name and type attributes of all input tags in the form
-        $input_tag_names = array();
+            // Load the HTML form using the DOMDocument class
+            $dom = new DOMDocument();
+            @$dom->loadHTML($form_html); // suppress warnings about invalid HTML
 
-        // Load the HTML form using the DOMDocument class
-        $dom = new DOMDocument();
-        @$dom->loadHTML($form_html); // suppress warnings about invalid HTML
+            // Get all input elements in the form
+            $input_tags = $dom->getElementsByTagName('input');
 
-        // Get all input elements in the form
-        $input_tags = $dom->getElementsByTagName('input');
-
-        // Loop through each input element and extract the name and type attributes
-        foreach ($input_tags as $input) {
-            $name = $input->getAttribute('name');
-            $type = $input->getAttribute('type');
-            if (!empty($name)) {
-                $input_tag_names[] = $name . ";" . $type;
+            // Loop through each input element and extract the name and type attributes
+            foreach ($input_tags as $input) {
+                $name = $input->getAttribute('name');
+                $type = $input->getAttribute('type');
+                if (!empty($name)) {
+                    $input_tag_names[] = $name . ";" . $type;
+                }
             }
+
+            // Return an array of all name and type attributes of input tags in the form
+            return $input_tag_names;
         }
 
-        // Return an array of all name and type attributes of input tags in the form
-        return $input_tag_names;
-    }
+        // Define a function to extract the name attribute of a form
+        function get_form_name($form)
+        {
+            // Load the form HTML using the DOMDocument class
+            $doc = new DOMDocument();
+            @$doc->loadHTML($form); // suppress warnings about invalid HTML
 
-    // Define a function to extract the name attribute of a form
-    function get_form_name($form)
-    {
-        // Load the form HTML using the DOMDocument class
-        $doc = new DOMDocument();
-        @$doc->loadHTML($form); // suppress warnings about invalid HTML
+            // Get the name attribute of the form
+            $form_name = $doc->getElementsByTagName('form')->item(0)->getAttribute('name');
+            return $form_name;
+        }
 
-        // Get the name attribute of the form
-        $form_name = $doc->getElementsByTagName('form')->item(0)->getAttribute('name');
-        return $form_name;
-    }
 }
 
 // Check if the KarrieretagPlugin class exists
