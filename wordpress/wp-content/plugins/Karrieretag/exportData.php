@@ -1,10 +1,10 @@
 <?php
 
 //data of database
-$dbHost = "localhost";
-$dbUsername = "wordpress"; //nach belieben umändern
-$dbPassword = "Pa$\$word1234"; //nach belieben umändern
-$dbName = "test"; //nach belieben umändern
+$dbHost = "localhost"; //changeable
+$dbUsername = "wordpress"; //changeable
+$dbPassword = "Pa$\$word1234"; //changeable
+$dbName = "test"; //changeable
 
 //table name
 $dbTable = $_GET['dbTable'];

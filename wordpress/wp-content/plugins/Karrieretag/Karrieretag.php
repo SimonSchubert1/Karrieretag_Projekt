@@ -217,95 +217,95 @@ class KarrieretagPlugin
 
     // Define a function to find all forms on the website
 
-        function find_forms_on_website()
-        {
+    function find_forms_on_website()
+    {
 
-            $args = array(
-                'post_type' => 'any',
-                'post_status' => 'publish',
-                'posts_per_page' => -1
-            );
+        $args = array(
+            'post_type' => 'any',
+            'post_status' => 'publish',
+            'posts_per_page' => -1
+        );
 
-            // Get all published posts
-            $posts = get_posts($args);
+        // Get all published posts
+        $posts = get_posts($args);
 
-            // Initialize an empty array to store all forms found on the website
-            $forms = array();
+        // Initialize an empty array to store all forms found on the website
+        $forms = array();
 
-            // Loop through each post and use regular expressions to find all form elements in its content
-            foreach ($posts as $post) {
-                preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
-                foreach ($matches[0] as $match) {
-                    $forms[] = $match;
-                }
+        // Loop through each post and use regular expressions to find all form elements in its content
+        foreach ($posts as $post) {
+            preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
+            foreach ($matches[0] as $match) {
+                $forms[] = $match;
             }
-
-
-            // Return an array of all form elements found on the website
-
-
-            return $forms;
         }
 
-        function find_forms_on_website_full_code()
-        {
-            $args = array(
-                'post_type' => 'any',
-                'post_status' => 'publish',
-                'posts_per_page' => -1
-            );
 
-            $posts = get_posts($args);
+        // Return an array of all form elements found on the website
 
-            $forms = array();
 
-            foreach ($posts as $post) {
-                preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
-                foreach ($matches[0] as $match) {
-                    $forms[] = $match;
-                }
+        return $forms;
+    }
+
+    function find_forms_on_website_full_code()
+    {
+        $args = array(
+            'post_type' => 'any',
+            'post_status' => 'publish',
+            'posts_per_page' => -1
+        );
+
+        $posts = get_posts($args);
+
+        $forms = array();
+
+        foreach ($posts as $post) {
+            preg_match_all('/<form.*<\/form>/siU', $post->post_content, $matches);
+            foreach ($matches[0] as $match) {
+                $forms[] = $match;
             }
-
-            return $forms;
         }
 
-        // Define a function to extract the name and type attributes of all input tags in a form
-        function get_input_tag_names_and_type($form_html)
-        {
-            // Initialize an empty array to store the name and type attributes of all input tags in the form
-            $input_tag_names = array();
+        return $forms;
+    }
 
-            // Load the HTML form using the DOMDocument class
-            $dom = new DOMDocument();
-            @$dom->loadHTML($form_html); // suppress warnings about invalid HTML
+    // Define a function to extract the name and type attributes of all input tags in a form
+    function get_input_tag_names_and_type($form_html)
+    {
+        // Initialize an empty array to store the name and type attributes of all input tags in the form
+        $input_tag_names = array();
 
-            // Get all input elements in the form
-            $input_tags = $dom->getElementsByTagName('input');
+        // Load the HTML form using the DOMDocument class
+        $dom = new DOMDocument();
+        @$dom->loadHTML($form_html); // suppress warnings about invalid HTML
 
-            // Loop through each input element and extract the name and type attributes
-            foreach ($input_tags as $input) {
-                $name = $input->getAttribute('name');
-                $type = $input->getAttribute('type');
-                if (!empty($name)) {
-                    $input_tag_names[] = $name . ";" . $type;
-                }
+        // Get all input elements in the form
+        $input_tags = $dom->getElementsByTagName('input');
+
+        // Loop through each input element and extract the name and type attributes
+        foreach ($input_tags as $input) {
+            $name = $input->getAttribute('name');
+            $type = $input->getAttribute('type');
+            if (!empty($name)) {
+                $input_tag_names[] = $name . ";" . $type;
             }
-
-            // Return an array of all name and type attributes of input tags in the form
-            return $input_tag_names;
         }
 
-        // Define a function to extract the name attribute of a form
-        function get_form_name($form)
-        {
-            // Load the form HTML using the DOMDocument class
-            $doc = new DOMDocument();
-            @$doc->loadHTML($form); // suppress warnings about invalid HTML
+        // Return an array of all name and type attributes of input tags in the form
+        return $input_tag_names;
+    }
 
-            // Get the name attribute of the form
-            $form_name = $doc->getElementsByTagName('form')->item(0)->getAttribute('name');
-            return $form_name;
-        }
+    // Define a function to extract the name attribute of a form
+    function get_form_name($form)
+    {
+        // Load the form HTML using the DOMDocument class
+        $doc = new DOMDocument();
+        @$doc->loadHTML($form); // suppress warnings about invalid HTML
+
+        // Get the name attribute of the form
+        $form_name = $doc->getElementsByTagName('form')->item(0)->getAttribute('name');
+        return $form_name;
+    }
 
 }
 
