@@ -11,6 +11,8 @@ The Karrieretag Plugin is a WordPress plugin that adds a custom menu page to the
 
 ## Usage
 
+- Make a Database
+- Write the specifications of the Database in the Plugins `.php` files
 - Login to your WordPress dashboard and navigate to the "Karrieretag" menu page.
 - Check the checkboxes next to the forms you want to export data from.
 - Click the "Export" link next to the form name to download the CSV file containing the form data.
