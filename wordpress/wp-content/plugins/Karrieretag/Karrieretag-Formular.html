@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Karrieretag - Formular</title>
+</head>
+<body>
+<style>
+
+    body {
+        font-family: sans-serif;
+    }
+
+    textarea, p, button {
+        font-family: inherit;
+    }
+
+    form {
+        border: 1px solid black;
+        width: 90%;
+        background-color: whitesmoke;
+
+        margin: 0 auto;
+        padding: 2em 1em 1em 2em;
+    }
+
+    form label {
+        display: block;
+        font-size: 0.8em;
+        color: darkslategrey;
+        padding-left: 3px;
+    }
+
+    input[type="text"], input[type="url"], input[type="number"], input[type="email"], textarea {
+        width: 100%;
+        font-size: 1.1em;
+        padding: 4px;
+        font-family: inherit;
+        font-weight: lighter;
+        border-radius: 0.3em;
+
+        border: 1px solid gray;
+        outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+        border: 1px solid blue;
+    }
+
+    button{
+
+    }
+
+    input[type=submit], button {
+        background-color: burlywood;
+        cursor: pointer;
+        width: 14em;
+        padding: .3em 0;
+        border-radius: 0.7em;
+    }
+
+    input[type=submit]:hover, button:hover {
+        background-color: limegreen;
+        box-shadow: 2px 2px 2px grey;
+    }
+</style>
+<script>
+    function toggleForm() {
+        let state = document.getElementById('Karrieretag-Form').hidden;
+        if(!state){
+            document.getElementById('toggleButton').innerHTML = "Form einblenden"
+        }
+        else{
+            document.getElementById('toggleButton').innerHTML = "Form ausblenden"
+        }
+        document.getElementById('Karrieretag-Form').hidden = !state;
+    }
+</script>
+<button type="button" onclick="toggleForm()" id="toggleButton">Form ausblenden</button><br><br>
+<div id="Karrieretag-Form">
+    <form name="Karrieretag" method="post" enctype="multipart/form-data" action="Karrieretag-Formular.php"
+          target="_self">
+        <input type="hidden" name="form-name" value="Karrieretag">
+
+        <label for="Firmenname">*Firmenname:</label>
+        <input type="text" id="Firmenname" name="Firmenname" required><br><br>
+
+        <!--- <label for="Stand">Stand:</label>
+         <input type="text" id="Stand" name="Stand"><br><br> --->
+
+        <label for="Webseite">Webseite:</label>
+        <input type="url" id="Webseite" name="Webseite"><br><br>
+
+        <label for="StrasseHausnummer">*Straße und Hausnummer:</label>
+        <input type="text" id="StrasseHausnummer" name="StrasseHausnummer" required><br><br>
+
+        <label for="Stadt">*Stadt:</label>
+        <input type="text" id="Stadt" name="Stadt" required><br><br>
+
+        <label for="PLZ">*Postleitzahl:</label>
+        <input type="number" id="PLZ" name="PLZ" required min="0" max="9999"><br><br>
+
+        <label for="Branche">Branche:</label>
+        <input type="text" id="Branche" name="Branche"><br><br>
+
+        <label for="NameKontaktPerson">*Name des Ansprechpartner/in:</label>
+        <input type="text" id="NameKontaktPerson" name="NameKontaktPerson" required><br><br>
+
+        <label for="EMailKontaktPerson">*E-Mail Adresse des Ansprechpartner/in:</label>
+        <input type="email" id="EMailKontaktPerson" name="EMailKontaktPerson" required><br><br>
+
+        <label for="Standorte">Standorte:</label>
+        <input type="text" id="Standorte" name="Standorte"><br><br>
+
+        <label for="AnzahlMitarbeiter">Anzahl der Mitarbeiter:</label>
+        <input type="number" id="AnzahlMitarbeiter" name="AnzahlMitarbeiter" min="0"><br><br>
+
+        <label for="idealerKandidat">Ideale*r Kandidat*in:</label>
+        <textarea id="idealerKandidat" name="idealerKandidat" rows="6" cols="60"></textarea><br><br>
+
+        <label for="Karrierechancen">Karrierechancen:</label>
+        <textarea id="Karrierechancen" name="Karrierechancen" rows="6" cols="60"></textarea><br><br>
+
+        <label for="Moeglichkeiten">Möglichkeiten:</label>
+        <input type="text" id="Moeglichkeiten" name="Moeglichkeiten"><br><br>
+
+        <label for="ChemieHoehereSchule">Chemie (Höhere Schule):</label>
+        <input type="checkbox" id="ChemieHoehereSchule" name="ChemieHoehereSchule"><br>
+
+        <label for="ElektrotechnikHoehereSchule">Elektrotechnik (Höhere Schule):</label>
+        <input type="checkbox" id="ElektrotechnikHoehereSchule" name="ElektrotechnikHoehereSchule"><br>
+
+        <label for="InformationstechnologieHoehereSchule">Informationstechnologie (Höhere Schule):</label>
+        <input type="checkbox" id="InformationstechnologieHoehereSchule"
+               name="InformationstechnologieHoehereSchule"><br>
+
+        <label for="MaschinenbauHoehereSchule">Maschinenbau (Höhere Schule):</label>
+        <input type="checkbox" id="MaschinenbauHoehereSchule" name="MaschinenbauHoehereSchule"><br>
+
+        <label for="MechatronikHoehereSchule">Mechatronik (Höhere Schule):</label>
+        <input type="checkbox" id="MechatronikHoehereSchule" name="MechatronikHoehereSchule"><br>
+
+        <label for="ChemieFachschule">Chemie (Fachschule):</label>
+        <input type="checkbox" id="ChemieFachschule" name="ChemieFachschule"><br>
+
+        <label for="ElektrotechnikFachschule">Elektrotechnik (Fachschule):</label>
+        <input type="checkbox" id="ElektrotechnikFachschule" name="ElektrotechnikFachschule"><br><br>
+
+        <label for="Firmenlogo">*Firmenlogo:</label>
+        <input type="file" id="Firmenlogo" name="Firmenlogo" required><br><br>
+
+        <label for="BildAnsprechpartner">*Bild des Ansprechpartner/in:</label>
+        <input type="file" id="BildAnsprechpartner" name="BildAnsprechpartner" required><br><br>
+
+        <input type="submit" value="Absenden">
+        <p>Alle Felder, die mit * makiert sind, sind Plfichtfelder!</p>
+    </form>
+</div>
+</body>
+</html>
